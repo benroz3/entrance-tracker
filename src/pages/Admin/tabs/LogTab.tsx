@@ -1,11 +1,22 @@
+import { useState } from 'react'
 import { Badge } from '@/components/Badge/Badge'
 import { EmployeeIdReveal } from '@/components/EmployeeIdReveal/EmployeeIdReveal'
+import { useAdminFilteredLogs } from '@/hooks/useAdminFilteredLogs'
 import { useLogs } from '@/hooks/useLogs'
+import { hasActiveAdminSearch, parseAdminSearch } from '@/utils/adminSearch'
 import { formatDateTime } from '@/utils/formatTime'
 import t from '@/i18n/he.json'
 
 export function LogTab() {
+  const [searchRaw, setSearchRaw] = useState('')
   const { items, loadMore, canLoadMore, error, loading } = useLogs()
+  const { filteredLogs, searchPending } = useAdminFilteredLogs(
+    items,
+    searchRaw
+  )
+
+  const searchTokens = parseAdminSearch(searchRaw)
+  const searchActive = hasActiveAdminSearch(searchTokens)
 
   if (error) {
     return <div className="error-banner">{t.common.error}</div>
@@ -13,6 +24,30 @@ export function LogTab() {
 
   return (
     <div>
+      <div className="admin-search field">
+        <label className="field__label" htmlFor="admin-log-search">
+          {t.admin.searchLabel}
+        </label>
+        <input
+          id="admin-log-search"
+          className="input"
+          type="search"
+          autoComplete="off"
+          placeholder={t.admin.searchPlaceholder}
+          value={searchRaw}
+          onChange={(e) => setSearchRaw(e.target.value)}
+        />
+        {searchPending ? (
+          <p className="admin-search__meta">{t.admin.searchFiltering}</p>
+        ) : null}
+        {!loading && searchActive && !searchPending ? (
+          <p className="admin-search__meta">
+            {t.admin.searchShownLive} {filteredLogs.length}{' '}
+            {t.admin.searchOutOf} {items.length} {t.admin.searchSuffixLog}
+          </p>
+        ) : null}
+      </div>
+
       <div className="log-table-wrap">
         <table className="log-table">
           <thead>
@@ -36,8 +71,14 @@ export function LogTab() {
                   {t.admin.logEmpty}
                 </td>
               </tr>
+            ) : filteredLogs.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="muted">
+                  {t.admin.searchNoResults}
+                </td>
+              </tr>
             ) : (
-              items.map((row) => (
+              filteredLogs.map((row) => (
                 <tr key={row.id}>
                   <td>
                     <Badge

@@ -28,6 +28,18 @@
   color: $color-accent-green;
 }
 
+.admin-search {
+  margin-bottom: $space-lg;
+}
+
+.admin-search__meta {
+  margin: $space-sm 0 0;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
 .live-list {
   display: flex;
   flex-direction: column;

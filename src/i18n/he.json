@@ -45,7 +45,15 @@
     "deptNobody": "אין נוכחים",
     "deptPeopleCount": "נוכחים",
     "deptPlaceholder": "שם מרכז/יחידה חדש",
-    "deptEmpty": "אין מרכזים/יחידות, הוסף מרכז/יחידה ראשונה"
+    "deptEmpty": "אין מרכזים/יחידות, הוסף מרכז/יחידה ראשונה",
+    "searchLabel": "חיפוש",
+    "searchPlaceholder": "מספר אישי ו/או מתאריך/שעה",
+    "searchNoResults": "אין תוצאות התואמות לחיפוש",
+    "searchFiltering": "מסנן…",
+    "searchShownLive": "מוצגים",
+    "searchOutOf": "מתוך",
+    "searchSuffixLive": "נוכחים",
+    "searchSuffixLog": "רישומים"
   },
   "common": {
     "back": "חזרה",
