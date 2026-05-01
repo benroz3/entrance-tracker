@@ -38,6 +38,12 @@ npm run build
 npm run preview
 ```
 
+## Netlify
+
+The repo includes `netlify.toml`: build command `npm run build`, publish folder `dist`, and a SPA fallback so routes like `/admin` load `index.html`. If Netlify skips the build and publishes the repo root, the browser loads `/src/main.tsx` from source (wrong MIME type) and the app appears blank.
+
+Add the same `VITE_*` variables from `.env` under **Site configuration → Environment variables** (including `VITE_EMPLOYEE_ID_SECRET`), then trigger a new deploy.
+
 ## Firestore collections
 
 - `departments` — `name`, `createdAt`

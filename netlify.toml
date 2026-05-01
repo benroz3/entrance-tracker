@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Client-side routes (React Router); without this, direct loads like /admin return 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
