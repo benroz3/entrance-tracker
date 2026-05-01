@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react'
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { addDepartment, deleteDepartment } from '@/firebase/departments'
 import { useDepartments } from '@/hooks/useDepartments'
 import { useEntries } from '@/hooks/useEntries'
@@ -10,6 +10,13 @@ export function DepartmentsTab() {
   const [name, setName] = useState('')
   const [busyId, setBusyId] = useState<string | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
+  const nameInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (!loading && !error) {
+      nameInputRef.current?.focus()
+    }
+  }, [loading, error])
 
   const counts = useMemo(() => {
     const map = new Map<string, number>()
@@ -66,6 +73,7 @@ export function DepartmentsTab() {
         </label>
         <div className="dept-add__row">
           <input
+            ref={nameInputRef}
             id="newDept"
             className="input"
             value={name}

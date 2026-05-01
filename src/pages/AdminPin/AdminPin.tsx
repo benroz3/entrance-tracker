@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import t from '@/i18n/he.json'
@@ -12,6 +12,11 @@ export function AdminPin() {
   const [value, setValue] = useState('')
   const [shake, setShake] = useState(false)
   const [showError, setShowError] = useState(false)
+  const pinInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    pinInputRef.current?.focus()
+  }, [])
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -53,6 +58,7 @@ export function AdminPin() {
             {t.pin.passwordLabel}
           </label>
           <input
+            ref={pinInputRef}
             id="admin-pin-input"
             className={
               shake

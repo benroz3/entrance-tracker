@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react'
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   EMPLOYEE_ID_LENGTH,
@@ -31,6 +31,7 @@ export function WorkerCheckin() {
   const [searchKey, setSearchKey] = useState<string | null>(null)
   const [keyReady, setKeyReady] = useState(true)
   const [cryptoError, setCryptoError] = useState(false)
+  const employeeInputRef = useRef<HTMLInputElement>(null)
 
   const trimmedId = employeeId.trim()
   const normalizedId = useMemo(
@@ -97,6 +98,13 @@ export function WorkerCheckin() {
     const timer = window.setTimeout(() => navigate('/'), 3000)
     return () => window.clearTimeout(timer)
   }, [result, navigate])
+
+  useEffect(() => {
+    if (result !== null) return
+    if (cryptoError) return
+    if (deptError ?? entriesError) return
+    employeeInputRef.current?.focus()
+  }, [result, deptError, entriesError, cryptoError])
 
   const onChangeEmployeeId = (raw: string) => {
     const digits = raw.replace(/\D/g, '').slice(0, EMPLOYEE_ID_LENGTH)
@@ -212,6 +220,7 @@ export function WorkerCheckin() {
             {t.checkin.enterIdLabel}
           </label>
           <input
+            ref={employeeInputRef}
             id="employeeId"
             className="input"
             inputMode="numeric"
