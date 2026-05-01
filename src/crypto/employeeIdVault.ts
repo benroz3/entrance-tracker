@@ -1,8 +1,11 @@
 const textEnc = new TextEncoder()
 const textDec = new TextDecoder()
 
+/** Worker-facing employee ID: digits only, this many characters. */
+export const EMPLOYEE_ID_LENGTH = 7 as const
+
 export function normalizeEmployeeId(id: string): string {
-  return id.replace(/\D/g, '').slice(0, 8)
+  return id.replace(/\D/g, '').slice(0, EMPLOYEE_ID_LENGTH)
 }
 
 function requireSecret(): string {

@@ -14,14 +14,15 @@
   "checkin": {
     "title": "כניסה / יציאה",
     "selectDept": "בחר מרכז/יחידה",
-    "enterIdLabel": "מספר עובד",
-    "enterIdPlaceholder": "הזן מספר עובד",
+    "enterIdLabel": "מספר אישי",
+    "enterIdPlaceholder": "הזן 7 ספרות",
     "submitBtn": "המשך",
     "confirmIn": "נרשמה כניסה",
     "confirmOut": "נרשמה יציאה",
     "redirectMsg": "מועבר לדף הבית...",
     "errorNotFound": "מרכז/יחידה לא נבחרה",
-    "errorEmptyId": "יש להזין מספר עובד"
+    "errorEmptyId": "יש להזין מספר אישי",
+    "errorIdLength": "מספר אישי חייב להיות 7 ספרות בדיוק (ספרות בלבד)"
   },
   "admin": {
     "tabLive": "נוכחים",
@@ -34,7 +35,7 @@
     "logActionEntry": "כניסה",
     "logActionExit": "יציאה",
     "logColAction": "פעולה",
-    "logColId": "מספר עובד",
+    "logColId": "מספר אישי",
     "logColDept": "מרכז/יחידה",
     "logColTime": "זמן",
     "deptNameLabel": "שם מרכז/יחידה",

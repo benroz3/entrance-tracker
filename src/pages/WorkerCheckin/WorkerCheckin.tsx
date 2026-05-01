@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
+  EMPLOYEE_ID_LENGTH,
   getEmployeeSearchKey,
   normalizeEmployeeId,
 } from '@/crypto/employeeIdVault'
@@ -44,6 +45,12 @@ export function WorkerCheckin() {
       setCryptoError(false)
       return
     }
+    if (normalizedId.length !== EMPLOYEE_ID_LENGTH) {
+      setSearchKey(null)
+      setKeyReady(true)
+      setCryptoError(false)
+      return
+    }
     let cancelled = false
     setKeyReady(false)
     setCryptoError(false)
@@ -70,7 +77,7 @@ export function WorkerCheckin() {
     () =>
       keyReady &&
       !cryptoError &&
-      normalizedId.length > 0 &&
+      normalizedId.length === EMPLOYEE_ID_LENGTH &&
       entries.some(
         (e) =>
           (e.employeeKey != null && e.employeeKey === searchKey) ||
@@ -92,13 +99,13 @@ export function WorkerCheckin() {
   }, [result, navigate])
 
   const onChangeEmployeeId = (raw: string) => {
-    const digits = raw.replace(/\D/g, '').slice(0, 8)
+    const digits = raw.replace(/\D/g, '').slice(0, EMPLOYEE_ID_LENGTH)
     setEmployeeId(digits)
     setFormError(null)
   }
 
   const showDeptSelect =
-    normalizedId.length > 0 &&
+    normalizedId.length === EMPLOYEE_ID_LENGTH &&
     keyReady &&
     !cryptoError &&
     !loadingEntries &&
@@ -112,6 +119,10 @@ export function WorkerCheckin() {
 
     if (!normalizedId) {
       setFormError(t.checkin.errorEmptyId)
+      return
+    }
+    if (normalizedId.length !== EMPLOYEE_ID_LENGTH) {
+      setFormError(t.checkin.errorIdLength)
       return
     }
 
@@ -174,6 +185,8 @@ export function WorkerCheckin() {
     !!dataError ||
     cryptoError ||
     !keyReady ||
+    (normalizedId.length > 0 &&
+      normalizedId.length !== EMPLOYEE_ID_LENGTH) ||
     (showDeptSelect && (loadingDepts || departments.length === 0))
 
   return (
@@ -202,9 +215,9 @@ export function WorkerCheckin() {
             id="employeeId"
             className="input"
             inputMode="numeric"
-            pattern="[0-9]*"
+            pattern="[0-9]{7}"
             autoComplete="off"
-            maxLength={8}
+            maxLength={EMPLOYEE_ID_LENGTH}
             placeholder={t.checkin.enterIdPlaceholder}
             value={employeeId}
             onChange={(e) => onChangeEmployeeId(e.target.value)}
@@ -212,8 +225,10 @@ export function WorkerCheckin() {
           />
         </div>
 
-        {(loadingEntries && normalizedId.length > 0) ||
-        (!keyReady && normalizedId.length > 0 && !cryptoError) ? (
+        {(loadingEntries && normalizedId.length === EMPLOYEE_ID_LENGTH) ||
+        (!keyReady &&
+          normalizedId.length === EMPLOYEE_ID_LENGTH &&
+          !cryptoError) ? (
           <p className="muted">{t.common.loading}</p>
         ) : null}
 
