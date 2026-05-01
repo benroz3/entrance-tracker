@@ -103,7 +103,8 @@ export function WorkerCheckin() {
     !cryptoError &&
     !loadingEntries &&
     entriesError === null &&
-    !isInside
+    !isInside &&
+    !submitting
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
