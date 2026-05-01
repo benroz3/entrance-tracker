@@ -1,0 +1,20 @@
+@use '../../styles/variables' as *;
+
+.badge {
+  display: inline-block;
+  padding: 2px $space-sm;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  border: 1px solid $color-border-strong;
+}
+
+.badge--entry {
+  color: $color-accent-green;
+  border-color: $color-accent-green;
+}
+
+.badge--exit {
+  color: $color-accent-red;
+  border-color: $color-accent-red;
+}

@@ -1,0 +1,43 @@
+@use '../../styles/variables' as *;
+
+.admin-pin {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.admin-pin__input {
+  font-size: 16px;
+  letter-spacing: 0.08em;
+}
+
+.admin-pin__input--shake {
+  animation: admin-pin-shake 0.45s ease;
+}
+
+@keyframes admin-pin-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(6px);
+  }
+  40% {
+    transform: translateX(-6px);
+  }
+  60% {
+    transform: translateX(4px);
+  }
+  80% {
+    transform: translateX(-4px);
+  }
+}
+
+.admin-pin__error {
+  margin: 0 0 $space-md;
+  color: $color-accent-red;
+  text-align: center;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+}

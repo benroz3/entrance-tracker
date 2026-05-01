@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// WARNING: These rules allow any client to read and write all documents.
+// Tighten before production (for example: authenticated users only, custom claims,
+// or backend-mediated writes). For deployed web apps, combine Firebase App Check,
+// IP allowlisting / VPC controls, or a Cloud Function proxy instead of exposing
+// fully open rules on the public internet.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

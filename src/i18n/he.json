@@ -1,0 +1,55 @@
+{
+  "home": {
+    "title": "מעקב כניסות שער",
+    "workerBtn": "כניסה / יציאה",
+    "adminBtn": "פאנל ניהול"
+  },
+  "pin": {
+    "adminTitle": "הזן קוד מנהל",
+    "passwordLabel": "קוד מנהל",
+    "passwordPlaceholder": "אותיות, מספרים וסימנים",
+    "submitBtn": "אישור",
+    "error": "קוד שגוי, נסה שנית"
+  },
+  "checkin": {
+    "title": "כניסה / יציאה",
+    "selectDept": "בחר מרכז/יחידה",
+    "enterIdLabel": "מספר עובד",
+    "enterIdPlaceholder": "הזן מספר עובד",
+    "submitBtn": "המשך",
+    "confirmIn": "נרשמה כניסה",
+    "confirmOut": "נרשמה יציאה",
+    "redirectMsg": "מועבר לדף הבית...",
+    "errorNotFound": "מרכז/יחידה לא נבחרה",
+    "errorEmptyId": "יש להזין מספר עובד"
+  },
+  "admin": {
+    "tabLive": "נוכחים",
+    "tabLog": "יומן",
+    "tabDepts": "מרכזים/יחידות",
+    "totalInside": "סה״כ בפנים",
+    "nobody": "אין נוכחים כרגע",
+    "loadMore": "טען עוד",
+    "logEmpty": "אין רישומים ביומן",
+    "logActionEntry": "כניסה",
+    "logActionExit": "יציאה",
+    "logColAction": "פעולה",
+    "logColId": "מספר עובד",
+    "logColDept": "מרכז/יחידה",
+    "logColTime": "זמן",
+    "deptNameLabel": "שם מרכז/יחידה",
+    "deptAddBtn": "הוסף",
+    "deptDeleteBtn": "מחק",
+    "deptDeleteBlocked": "לא ניתן למחוק — יש נוכחים במרכז/יחידה",
+    "deptNobody": "אין נוכחים",
+    "deptPeopleCount": "נוכחים",
+    "deptPlaceholder": "שם מרכז/יחידה חדש",
+    "deptEmpty": "אין מרכזים/יחידות, הוסף מרכז/יחידה ראשונה"
+  },
+  "common": {
+    "back": "חזרה",
+    "loading": "טוען...",
+    "error": "שגיאה בטעינת נתונים",
+    "cryptoError": "חסרה הגדרת VITE_EMPLOYEE_ID_SECRET (לפחות 16 תווים)"
+  }
+}

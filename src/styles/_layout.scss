@@ -1,0 +1,210 @@
+@use 'variables' as *;
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout__main {
+  flex: 1;
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 0 auto;
+  padding: $space-lg;
+}
+
+.page-title {
+  margin: 0 0 $space-xl;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: $label-letter-spacing;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-md;
+  margin-bottom: $space-lg;
+}
+
+.page-header__spacer {
+  flex: 1;
+}
+
+.field {
+  margin-bottom: $space-lg;
+}
+
+.field__label {
+  display: block;
+  margin-bottom: $space-sm;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: $space-md;
+  border-radius: 0;
+  border: 1px solid $color-border-strong;
+  background: $color-surface;
+  color: $color-text;
+  font-family: $font-family-base;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent-green;
+  }
+}
+
+.select {
+  appearance: none;
+  background-image: linear-gradient(
+      45deg,
+      transparent 50%,
+      $color-text-muted 50%
+    ),
+    linear-gradient(135deg, $color-text-muted 50%, transparent 50%);
+  background-position: calc(0% + 14px) calc(50% + 2px),
+    calc(0% + 9px) calc(50% + 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-inline-end: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  width: 100%;
+  padding: $space-md $space-lg;
+  border-radius: 0;
+  border: 1px solid $color-border-strong;
+  background: $color-surface;
+  color: $color-text;
+  font-family: $font-family-base;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent-green;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: $color-accent-green;
+    color: $color-accent-green;
+  }
+}
+
+.btn--primary {
+  border-color: $color-accent-green;
+  color: $color-accent-green;
+}
+
+.btn--ghost {
+  width: auto;
+  border-color: transparent;
+  background: transparent;
+  padding-inline: $space-sm;
+
+  &:hover:not(:disabled) {
+    border-color: transparent;
+    color: $color-accent-green;
+  }
+}
+
+.btn--danger {
+  border-color: $color-accent-red;
+  color: $color-accent-red;
+
+  &:hover:not(:disabled) {
+    border-color: $color-accent-red;
+    color: $color-accent-red;
+  }
+}
+
+.link-back {
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: $font-family-base;
+
+  &:hover {
+    color: $color-accent-green;
+  }
+
+  &:focus {
+    outline: none;
+    color: $color-accent-green;
+  }
+}
+
+.muted {
+  color: $color-text-muted;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.error-banner {
+  margin-bottom: $space-md;
+  padding: $space-sm $space-md;
+  border: 1px solid $color-accent-red;
+  color: $color-accent-red;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.confirm-screen {
+  text-align: center;
+  padding: $space-xl 0;
+}
+
+.confirm-screen__headline {
+  margin: 0 0 $space-lg;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+}
+
+.confirm-screen__headline--in {
+  color: $color-accent-green;
+}
+
+.confirm-screen__headline--out {
+  color: $color-accent-red;
+}
+
+.confirm-screen__sub {
+  margin: 0;
+  color: $color-text-muted;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+}

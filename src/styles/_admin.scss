@@ -1,0 +1,209 @@
+@use 'variables' as *;
+
+.admin-toolbar {
+  margin-bottom: $space-lg;
+}
+
+.stats-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-md;
+  margin-bottom: $space-lg;
+  padding: $space-md;
+  border: 1px solid $color-border;
+  background: $color-surface;
+}
+
+.stats-row__label {
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.stats-row__value {
+  font-size: 28px;
+  font-weight: 700;
+  color: $color-accent-green;
+}
+
+.live-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.live-list__group {
+  border: 1px solid $color-border;
+  background: $color-surface;
+}
+
+.live-list__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: $space-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-md;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.live-list__chevron {
+  display: inline-block;
+  transition: transform 0.15s ease;
+  color: $color-text-muted;
+}
+
+.live-list__group[open] .live-list__chevron {
+  transform: rotate(-90deg);
+}
+
+.live-list__body {
+  padding: 0 $space-md $space-md;
+  border-top: 1px solid $color-border;
+}
+
+.live-list__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: $space-md;
+  padding: $space-sm 0;
+  border-bottom: 1px solid $color-border;
+  font-size: 14px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.live-list__time {
+  color: $color-text-muted;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.log-table-wrap {
+  overflow-x: auto;
+  border: 1px solid $color-border;
+}
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.log-table th,
+.log-table td {
+  padding: $space-sm $space-md;
+  border-bottom: 1px solid $color-border;
+  text-align: right;
+}
+
+.log-table th {
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  background: $color-surface;
+}
+
+.log-table tr:last-child td {
+  border-bottom: none;
+}
+
+.log-load-more {
+  margin-top: $space-md;
+}
+
+.dept-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.dept-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: $space-md;
+  align-items: center;
+  padding: $space-md;
+  border: 1px solid $color-border;
+  background: $color-surface;
+}
+
+.dept-row__name {
+  font-weight: 700;
+}
+
+.dept-row__meta {
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  text-align: center;
+}
+
+.dept-add {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  margin-bottom: $space-lg;
+}
+
+.dept-add__row {
+  display: flex;
+  gap: $space-sm;
+  align-items: stretch;
+}
+
+.dept-add__row .input {
+  flex: 1;
+}
+
+.dept-add__row .btn {
+  width: auto;
+  flex-shrink: 0;
+}
+
+.btn-icon-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.btn-icon-wrap[data-tooltip]:not([data-tooltip='']):hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  inset-inline-end: 0;
+  max-width: 220px;
+  padding: $space-sm $space-md;
+  background: $color-bg;
+  border: 1px solid $color-border-strong;
+  color: $color-text;
+  font-size: 11px;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  white-space: normal;
+  z-index: 2;
+}
+
+.empty-state {
+  padding: $space-xl;
+  border: 1px dashed $color-border-strong;
+  color: $color-text-muted;
+  text-align: center;
+  font-size: $label-font-size;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+}

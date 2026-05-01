@@ -1,0 +1,38 @@
+@use '../../styles/variables' as *;
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-xs;
+  margin-bottom: $space-lg;
+  border-bottom: 1px solid $color-border;
+  padding-bottom: $space-sm;
+}
+
+.tabs__tab {
+  font-family: $font-family-base;
+  padding: $space-sm $space-md;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: $color-surface;
+  color: $color-text-muted;
+  cursor: pointer;
+  letter-spacing: $label-letter-spacing;
+  text-transform: uppercase;
+  font-size: $label-font-size;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent-green;
+  }
+
+  &:hover {
+    color: $color-text;
+  }
+}
+
+.tabs__tab--active {
+  color: $color-accent-green;
+  border-color: $color-border-strong;
+  margin-bottom: -1px;
+}

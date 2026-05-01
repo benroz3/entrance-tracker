@@ -1,0 +1,21 @@
+@use 'variables' as *;
+
+.home-screen {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+  padding-top: $space-xl;
+}
+
+.home-screen__actions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  margin-top: $space-xl;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+}
