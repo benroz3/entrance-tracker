@@ -36,6 +36,8 @@ export type LogDocWrite = {
   departmentName: string
   action: LogAction
   timestamp: Timestamp
+  /** When set, Firestore TTL (console policy on `logs.expiresAt`) deletes the doc after this time. */
+  expiresAt: Timestamp
 }
 
 export type LogDocRead = {
@@ -47,6 +49,7 @@ export type LogDocRead = {
   departmentName: string
   action: LogAction
   timestamp: Timestamp
+  expiresAt?: Timestamp
 }
 
 export type Department = { id: string } & DepartmentDoc
