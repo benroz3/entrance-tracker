@@ -13,6 +13,9 @@
   },
   "checkin": {
     "title": "כניסה / יציאה",
+    "chooseIntentTitle": "בחרו כניסה או יציאה",
+    "titleEntry": "כניסה",
+    "titleExit": "יציאה",
     "selectDept": "בחר מרכז/יחידה",
     "enterIdLabel": "מספר אישי",
     "enterIdPlaceholder": "הזן 7 ספרות",
@@ -22,7 +25,9 @@
     "redirectMsg": "מועבר לדף הבית...",
     "errorNotFound": "מרכז/יחידה לא נבחרה",
     "errorEmptyId": "יש להזין מספר אישי",
-    "errorIdLength": "מספר אישי חייב להיות 7 ספרות בדיוק (ספרות בלבד)"
+    "errorIdLength": "מספר אישי חייב להיות 7 ספרות בדיוק (ספרות בלבד)",
+    "errorAlreadyInside": "כבר רשומים בפנים. ליציאה בחרו ״יציאה״ בדף הקודם",
+    "errorNotInside": "אין כניסה פעילה. לרישום בפנים בחרו ״כניסה״ בדף הקודם"
   },
   "admin": {
     "tabLive": "נוכחים",

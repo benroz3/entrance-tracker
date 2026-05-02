@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   EMPLOYEE_ID_LENGTH,
   getEmployeeSearchKey,
@@ -12,23 +12,26 @@ import {
 } from '@/firebase/entries'
 import { addLog } from '@/firebase/logs'
 import { useDepartments } from '@/hooks/useDepartments'
-import { useEntries } from '@/hooks/useEntries'
 import t from '@/i18n/he.json'
 
 type Result = 'in' | 'out' | null
 
+function intentFromParams(raw: string | null): 'entry' | 'exit' | null {
+  return raw === 'entry' || raw === 'exit' ? raw : null
+}
+
 export function WorkerCheckin() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const intent = intentFromParams(searchParams.get('intent'))
+
   const { departments, loading: loadingDepts, error: deptError } =
     useDepartments()
-  const { entries, loading: loadingEntries, error: entriesError } =
-    useEntries()
   const [departmentId, setDepartmentId] = useState('')
   const [employeeId, setEmployeeId] = useState('')
   const [formError, setFormError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [result, setResult] = useState<Result>(null)
-  const [searchKey, setSearchKey] = useState<string | null>(null)
   const [keyReady, setKeyReady] = useState(true)
   const [cryptoError, setCryptoError] = useState(false)
   const employeeInputRef = useRef<HTMLInputElement>(null)
@@ -41,13 +44,11 @@ export function WorkerCheckin() {
 
   useEffect(() => {
     if (!normalizedId) {
-      setSearchKey(null)
       setKeyReady(true)
       setCryptoError(false)
       return
     }
     if (normalizedId.length !== EMPLOYEE_ID_LENGTH) {
-      setSearchKey(null)
       setKeyReady(true)
       setCryptoError(false)
       return
@@ -56,15 +57,11 @@ export function WorkerCheckin() {
     setKeyReady(false)
     setCryptoError(false)
     getEmployeeSearchKey(normalizedId)
-      .then((k) => {
-        if (!cancelled) {
-          setSearchKey(k)
-          setKeyReady(true)
-        }
+      .then(() => {
+        if (!cancelled) setKeyReady(true)
       })
       .catch(() => {
         if (!cancelled) {
-          setSearchKey(null)
           setCryptoError(true)
           setKeyReady(true)
         }
@@ -74,25 +71,6 @@ export function WorkerCheckin() {
     }
   }, [normalizedId])
 
-  const isInside = useMemo(
-    () =>
-      keyReady &&
-      !cryptoError &&
-      normalizedId.length === EMPLOYEE_ID_LENGTH &&
-      entries.some(
-        (e) =>
-          (e.employeeKey != null && e.employeeKey === searchKey) ||
-          (e.employeeId != null && e.employeeId === normalizedId)
-      ),
-    [entries, normalizedId, searchKey, keyReady, cryptoError]
-  )
-
-  useEffect(() => {
-    if (isInside) {
-      setDepartmentId('')
-    }
-  }, [isInside])
-
   useEffect(() => {
     if (!result) return
     const timer = window.setTimeout(() => navigate('/'), 3000)
@@ -100,11 +78,12 @@ export function WorkerCheckin() {
   }, [result, navigate])
 
   useEffect(() => {
+    if (!intent) return
     if (result !== null) return
     if (cryptoError) return
-    if (deptError ?? entriesError) return
+    if (deptError) return
     employeeInputRef.current?.focus()
-  }, [result, deptError, entriesError, cryptoError])
+  }, [intent, result, deptError, cryptoError])
 
   const onChangeEmployeeId = (raw: string) => {
     const digits = raw.replace(/\D/g, '').slice(0, EMPLOYEE_ID_LENGTH)
@@ -113,17 +92,17 @@ export function WorkerCheckin() {
   }
 
   const showDeptSelect =
+    intent === 'entry' &&
     normalizedId.length === EMPLOYEE_ID_LENGTH &&
     keyReady &&
     !cryptoError &&
-    !loadingEntries &&
-    entriesError === null &&
-    !isInside &&
     !submitting
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setFormError(null)
+
+    if (!intent) return
 
     if (!normalizedId) {
       setFormError(t.checkin.errorEmptyId)
@@ -137,19 +116,12 @@ export function WorkerCheckin() {
     setSubmitting(true)
     try {
       const existing = await findEntriesByEmployeeId(normalizedId)
-      if (existing.length > 0) {
-        const first = existing[0]
-        for (const row of existing) {
-          await deleteEntry(row.id)
+
+      if (intent === 'entry') {
+        if (existing.length > 0) {
+          setFormError(t.checkin.errorAlreadyInside)
+          return
         }
-        await addLog(
-          normalizedId,
-          first.departmentId,
-          first.departmentName,
-          'exit'
-        )
-        setResult('out')
-      } else {
         if (!departmentId) {
           setFormError(t.checkin.errorNotFound)
           return
@@ -162,6 +134,22 @@ export function WorkerCheckin() {
         await addEntry(normalizedId, dept.id, dept.name)
         await addLog(normalizedId, dept.id, dept.name, 'entry')
         setResult('in')
+      } else {
+        if (existing.length === 0) {
+          setFormError(t.checkin.errorNotInside)
+          return
+        }
+        const first = existing[0]
+        for (const row of existing) {
+          await deleteEntry(row.id)
+        }
+        await addLog(
+          normalizedId,
+          first.departmentId,
+          first.departmentName,
+          'exit'
+        )
+        setResult('out')
       }
     } catch {
       setFormError(t.common.error)
@@ -187,31 +175,57 @@ export function WorkerCheckin() {
     )
   }
 
-  const dataError = deptError ?? entriesError
+  if (!intent) {
+    return (
+      <div className="stack">
+        <div className="page-header">
+          <Link className="link-back" to="/">
+            {t.common.back}
+          </Link>
+          <span className="page-header__spacer" />
+        </div>
+        <h1 className="page-title">{t.checkin.chooseIntentTitle}</h1>
+        <div className="home-screen__actions">
+          <Link className="btn btn--primary" to="/worker/checkin?intent=entry">
+            {t.checkin.titleEntry}
+          </Link>
+          <Link className="btn btn--danger" to="/worker/checkin?intent=exit">
+            {t.checkin.titleExit}
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   const submitDisabled =
     submitting ||
-    !!dataError ||
+    !!deptError ||
     cryptoError ||
     !keyReady ||
     (normalizedId.length > 0 &&
       normalizedId.length !== EMPLOYEE_ID_LENGTH) ||
-    (showDeptSelect && (loadingDepts || departments.length === 0))
+    (intent === 'entry' &&
+      showDeptSelect &&
+      (loadingDepts || departments.length === 0 || !departmentId))
+
+  const pageTitle =
+    intent === 'entry' ? t.checkin.titleEntry : t.checkin.titleExit
 
   return (
     <div className="stack">
       <div className="page-header">
-        <Link className="link-back" to="/">
+        <Link className="link-back" to="/worker/checkin">
           {t.common.back}
         </Link>
         <span className="page-header__spacer" />
       </div>
 
-      <h1 className="page-title">{t.checkin.title}</h1>
+      <h1 className="page-title">{pageTitle}</h1>
 
       {cryptoError ? (
         <div className="error-banner">{t.common.cryptoError}</div>
       ) : null}
-      {dataError ? <div className="error-banner">{t.common.error}</div> : null}
+      {deptError ? <div className="error-banner">{t.common.error}</div> : null}
       {formError ? <div className="error-banner">{formError}</div> : null}
 
       <form onSubmit={onSubmit} noValidate>
@@ -230,14 +244,13 @@ export function WorkerCheckin() {
             placeholder={t.checkin.enterIdPlaceholder}
             value={employeeId}
             onChange={(e) => onChangeEmployeeId(e.target.value)}
-            disabled={!!dataError || cryptoError}
+            disabled={!!deptError || cryptoError}
           />
         </div>
 
-        {(loadingEntries && normalizedId.length === EMPLOYEE_ID_LENGTH) ||
-        (!keyReady &&
-          normalizedId.length === EMPLOYEE_ID_LENGTH &&
-          !cryptoError) ? (
+        {!keyReady &&
+        normalizedId.length === EMPLOYEE_ID_LENGTH &&
+        !cryptoError ? (
           <p className="muted">{t.common.loading}</p>
         ) : null}
 
